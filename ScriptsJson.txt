@@ -1,0 +1,22 @@
+-- Questão 1
+
+SELECT 
+    JSON_UNQUOTE(JSON_EXTRACT(doc, '$.geography.Continent')) AS continente,
+    SUM(JSON_EXTRACT(doc, '$.demographics.Population')) AS populacao_total,
+    AVG(JSON_EXTRACT(doc, '$.demographics.LifeExpectancy')) AS media_expectativa_vida
+FROM countryinfo
+WHERE JSON_UNQUOTE(JSON_EXTRACT(doc, '$.government.GovernmentForm')) LIKE '%Monarchy%'
+GROUP BY JSON_UNQUOTE(JSON_EXTRACT(doc, '$.geography.Continent'))
+ORDER BY continente;
+
+select json_pretty(doc) from countryinfo;
+
+-- Questão 2
+
+select
+	json_extract(doc, '$.Name') as nome,
+	json_unquote(json_extract(doc, '$.geography.Continent')) as continente,
+    json_pretty(doc) as jon_formatado
+from countryinfo;
+    
+    
