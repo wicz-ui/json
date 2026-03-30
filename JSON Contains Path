@@ -1,0 +1,22 @@
+#30/03/2026 - JSON Contains Path
+
+CREATE TABLE X (Y JSON);
+
+INSERT INTO X VALUES ('{"nome": "Roberto", "telefone": "1234-5678"}');
+INSERT INTO X VALUES ('{"nome": "Maria"}');
+INSERT INTO X VALUES ('{"nome":"Alberto", "endereco": "Rua x numero y"}');
+INSERT INTO X VALUES ('{"nome":"Leticia", "endereco": "Rua x numero y", "telefone":"1234-5678"}');
+
+SELECT Y FROM X;
+
+select json_contains_path(Y, "ONE", '$.nome') FROM X;
+
+SELECT JSON_CONTAINS(Y, '"1234-5678"', "$.telefone") FROM X;
+SELECT * FROM X WHERE
+JSON_CONTAINS(Y, '"1234-5678"', "$.telefone") = 1;
+
+#JSON_SEARCH
+/*Permite encontrar um VALOR em qualquer
+propriedade*/
+SELECT JSON_SEARCH(Y, "ONE", "1234-5678") FROM X;
+
