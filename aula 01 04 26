@@ -1,0 +1,24 @@
+-- JSON_KEYS()
+select JSON_KEYS(doc)
+from countryinfo
+where _id = 'IND';
+
+-- JSON_EXTRACT()
+select JSON_EXTRACT(doc, '$.Name')
+from countryinfo
+where _id = 'IND';
+
+-- JSON_CONTAINS()
+select JSON_CONTAINS(doc, '"India"', '$.Name')
+from countryinfo
+where _id = 'IND';
+
+-- JSON_CONTAINS_PATH()
+select JSON_CONTAINS_PATH(doc, 'one', '$.geography.Continent')
+from countryinfo
+where _id = 'IND';
+
+-- JSON_SEARCH()
+select JSON_SEARCH(doc, 'one', 'India')
+from countryinfo
+where _id = 'IND';
