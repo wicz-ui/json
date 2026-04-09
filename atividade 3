@@ -1,0 +1,38 @@
+CREATE DATABASE atividade_json;
+USE atividade_json;
+
+CREATE TABLE teste_json (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    dados JSON
+);
+
+INSERT INTO teste_json (dados)
+VALUES ('{"nome":"Riny","idade":25}');
+
+-- JSON_MERGE()
+SELECT JSON_MERGE('{"a":1}', '{"b":2}');
+
+-- JSON_MERGE_PATCH
+SELECT JSON_MERGE_PATCH('{"a":1, "b":2}', '{"b":3}');
+
+-- 
+SELECT JSON_MERGE_PRESERVE('{"a":1}', '{"a":2}');
+
+SELECT JSON_DEPTH('{"a": {"b": {"c": 1}}}');
+
+SELECT JSON_LENGTH('{"a":1, "b":2}');
+SELECT JSON_LENGTH('[1,2,3]');
+
+SELECT JSON_TYPE('{"a":1}');
+
+SELECT JSON_VALID('{"a":1}');
+SELECT JSON_VALID('{"a":1');
+
+SELECT 
+JSON_MERGE('{"a":1}', '{"b":2}') AS merge_antigo,
+JSON_MERGE_PATCH('{"a":1,"b":2}', '{"b":3}') AS merge_patch,
+JSON_MERGE_PRESERVE('{"a":1}', '{"a":2}') AS merge_preserve,
+JSON_DEPTH('{"a":{"b":{"c":1}}}') AS profundidade,
+JSON_LENGTH('{"a":1,"b":2}') AS tamanho,
+JSON_TYPE('{"a":1}') AS tipo,
+JSON_VALID('{"a":1}') AS valido;
