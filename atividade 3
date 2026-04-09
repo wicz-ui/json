@@ -15,19 +15,24 @@ SELECT JSON_MERGE('{"a":1}', '{"b":2}');
 -- JSON_MERGE_PATCH
 SELECT JSON_MERGE_PATCH('{"a":1, "b":2}', '{"b":3}');
 
--- 
+-- JSON_MERGE_PRESERVE
 SELECT JSON_MERGE_PRESERVE('{"a":1}', '{"a":2}');
 
+-- JSON_DEPTH
 SELECT JSON_DEPTH('{"a": {"b": {"c": 1}}}');
 
+-- JSON_LENGTH
 SELECT JSON_LENGTH('{"a":1, "b":2}');
 SELECT JSON_LENGTH('[1,2,3]');
 
+-- JSON_TYPE
 SELECT JSON_TYPE('{"a":1}');
 
+-- JSON_VALID
 SELECT JSON_VALID('{"a":1}');
 SELECT JSON_VALID('{"a":1');
 
+-- Tudo junto
 SELECT 
 JSON_MERGE('{"a":1}', '{"b":2}') AS merge_antigo,
 JSON_MERGE_PATCH('{"a":1,"b":2}', '{"b":3}') AS merge_patch,
