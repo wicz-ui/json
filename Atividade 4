@@ -30,10 +30,12 @@ JOIN tb_object_funcionario o
 WHERE JSON_SEARCH(
           o.`JSON`,
           'one',
-          'Feminino',
+          'F',
           NULL,
-          '$.dependentes[*].sexo'
+          '$.Dependentes[*].Sexo'
       ) IS NOT NULL;
+
+USE empresa;
 
 -- Consulta 4
 SELECT
@@ -46,10 +48,10 @@ JOIN tb_object_funcionario o
     ON o.CPF = f.CPF
 CROSS JOIN JSON_TABLE(
     o.`JSON`,
-    '$.dependentes[*]'
+    '$.Dependentes[*]'
     COLUMNS (
-        nome VARCHAR(100) PATH '$.nome',
-        parentesco VARCHAR(50) PATH '$.parentesco',
-        data_nascimento DATE PATH '$.data_nascimento'
+        nome VARCHAR(100) PATH '$."Nome_Dependente"',
+        parentesco VARCHAR(50) PATH '$.Parentesco',
+        data_nascimento DATE PATH '$."Data_Nascimento"'
     )
 ) AS d;
