@@ -1,0 +1,43 @@
+-- Consulta 1
+SELECT
+    JSON_UNQUOTE(JSON_EXTRACT(doc, '$.Name')) AS pais,
+    JSON_EXTRACT(doc, '$.demographics.LifeExpectancy') AS expectativa_vida
+FROM countryinfo
+WHERE JSON_UNQUOTE(JSON_EXTRACT(doc, '$.geography.Continent')) = 'South America';
+
+-- Consulta 2
+SELECT
+    c.Name AS pais,
+    JSON_EXTRACT(ci.doc, '$.GNP') AS gnp
+FROM country c
+JOIN countryinfo ci
+    ON c.Code = JSON_UNQUOTE(JSON_EXTRACT(ci.doc, '$.Code'))
+JOIN countrylanguage cl
+    ON cl.CountryCode = c.Code
+WHERE JSON_EXTRACT(ci.doc, '$.GNP') > 500000
+  AND cl.Language = 'English'
+  AND cl.IsOfficial = 'T';
+
+-- Consulta 3
+SELECT
+    nome,
+    dependentes
+FROM funcionario
+WHERE JSON_SEARCH(dependentes, 'one', 'Feminino', NULL, '$[*].sexo') IS NOT NULL;
+
+-- Consulta 4
+SELECT
+    f.nome AS funcionario,
+    d.nome AS dependente,
+    d.parentesco,
+    d.data_nascimento
+FROM funcionario f,
+JSON_TABLE(
+    f.dependentes,
+    '$[*]'
+    COLUMNS (
+        nome VARCHAR(100) PATH '$.nome',
+        parentesco VARCHAR(50) PATH '$.parentesco',
+        data_nascimento DATE PATH '$.data_nascimento'
+    )
+) AS d;
