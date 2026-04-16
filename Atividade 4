@@ -18,23 +18,35 @@ WHERE JSON_EXTRACT(ci.doc, '$.GNP') > 500000
   AND cl.Language = 'English'
   AND cl.IsOfficial = 'T';
 
+USE empresa;
+
 -- Consulta 3
 SELECT
-    nome,
-    dependentes
-FROM funcionario
-WHERE JSON_SEARCH(dependentes, 'one', 'Feminino', NULL, '$[*].sexo') IS NOT NULL;
+    CONCAT_WS(' ', f.PRIMEIRO_NOME, f.NOME_MEIO, f.ULTIMO_NOME) AS nome_funcionario,
+    o.`JSON` AS conteudo_json
+FROM tb_funcionario f
+JOIN tb_object_funcionario o
+    ON o.CPF = f.CPF
+WHERE JSON_SEARCH(
+          o.`JSON`,
+          'one',
+          'Feminino',
+          NULL,
+          '$.dependentes[*].sexo'
+      ) IS NOT NULL;
 
 -- Consulta 4
 SELECT
-    f.nome AS funcionario,
-    d.nome AS dependente,
+    CONCAT_WS(' ', f.PRIMEIRO_NOME, f.NOME_MEIO, f.ULTIMO_NOME) AS nome_funcionario,
+    d.nome AS nome_dependente,
     d.parentesco,
     d.data_nascimento
-FROM funcionario f,
-JSON_TABLE(
-    f.dependentes,
-    '$[*]'
+FROM tb_funcionario f
+JOIN tb_object_funcionario o
+    ON o.CPF = f.CPF
+CROSS JOIN JSON_TABLE(
+    o.`JSON`,
+    '$.dependentes[*]'
     COLUMNS (
         nome VARCHAR(100) PATH '$.nome',
         parentesco VARCHAR(50) PATH '$.parentesco',
