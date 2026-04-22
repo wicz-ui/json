@@ -1,0 +1,157 @@
+#Lista 1 - Correção de Sintaxe JSON
+
+# Exercício 1
+/*Analise a sintaxe (escrita) das variáveis 
+que possuem como valor dados no formato JSON e corrija
+os erros de sintaxe. Reescreva os códigos ou adicione a linha correta
+utilizando um comentário, como no exemplo na alternativa a)*/
+
+-- a)
+ 
+aluno = { #objeto deve começar corretamente com chave de abertura
+	"nome": "Maria", #faltava ":" entre a chave e o valor
+	"idade": 30, 
+	"data_nascimento": "1995-02-02", #data em JSON deve estar entre aspas
+	"endereco": { #faltava fechar as aspas da chave e abrir o objeto do endereço
+		"rua": "Rua dos Fundos",
+		"numero": 123, #faltava vírgula ao final da linha anterior
+		"bairro": "Centro", #foi trocado ";" por ":" na chave "bairro"
+		"cep": "77830000" #CEP pode até ser número, mas como dado cadastral é melhor usar string
+	}, #faltava vírgula após o objeto "endereco"
+	"contato": {
+		"telefone": "99999999",
+		"email": "maria@dominio.com"
+	}
+} #
+
+-- b)
+
+cidade = { #faltavam as chaves do objeto
+		"nome":"Londrina", 
+		"idade": 90, 
+        "data_fundacao": "1934-12-10", #data em JSON deve estar entre aspas
+		"populacao": 581000, #chave vazia é inadequada; assumi que o valor se refere à população
+		"estado": "Paraná",
+        "territorio":{
+			"area":1652569,
+			"relevo": "Predominantemente Plano",
+            "altitude_maxima":840, #faltava vírgula ao final da linha
+            "altitude_minima":570
+			
+		}
+} #
+
+-- c)
+
+funcionario = {
+    "Cpf": "33344555587",
+    "Sexo": "M",
+    "Salario": 40000.0, #faltava vírgula ao final da linha
+    "Endereco": "Rua da Lapa 34 São Paulo SP", #string deve estar entre aspas e faltava vírgula
+    "Nome_Meio": "T",
+    "Dependentes": [
+        {
+            "Sexo": "F",
+            "Parentesco": "Filha",
+            "Data_Nascimento": "1986-01-05T00:04:00",
+            "Nome_Dependente": "Alicia"
+        }
+        {
+            "Sexo": "F",
+            "Parentesco": "Esposa",
+            "Data_Nascimento": "1958-01-03T00:05:00",
+            "Nome_Dependente": "Janaína"
+        },
+        {
+            "Sexo": "M",
+            "Parentesco": "Filho",
+            "Data_Nascimento": "1983-01-25T00:10:00", #faltava ":" após a chave
+            "Nome_Dependente": "Tiago"
+        } # Retirar a ,
+	], # Colocar ],
+    "Ultimo_Nome": "Wong",
+    "Primeiro_Nome": "Fernando",
+    "Cpf_Supervisor": "88866555576", #faltava fechar as aspas da chave
+    "Data_Nascimento": "1955-01-12T00:08:00",
+    "Numero_Departamento": 5 #valor numérico pode ficar sem aspas
+}
+
+# Exercício 2
+
+/*Analise as consultas SQL abaixo e aponte os erros de sintaxe. Tanto 
+as estruturas JSON quanto os comandos SQL podem estar erradas.*/
+
+-- a)
+
+-- Correção: JSON_EXTRACT precisa primeiro do documento/coluna JSON
+-- Correção: os campos foram separados em colunas distintas
+-- Correção: o nome da tabela deve vir no FROM, não no WHERE
+SELECT 
+	JSON_EXTRACT("$.Primeiro_Nome", 
+    "$.Data_Nascimento", "$.Salario")
+WHERE tb_object_funcionario;
+
+-- b)
+
+-- Correção: faltavam vírgulas entre as colunas do SELECT
+-- Correção: havia parêntese em posição errada no segundo JSON_EXTRACT
+-- Correção: "empresa" é o schema; a tabela correta aqui é tb_object_funcionario
+SELECT 
+	JSON_UNQUOTE(JSON_EXTRACT(JSON,"$.Primeiro_Nome")) 
+    JSON_UNQUOTE(JSON_EXTRACT(JSON,"$.Data_Nascimento"), 
+    JSON_EXTRACT(JSON,"$.Salario")
+FROM empresa;
+
+-- c)
+
+-- Correção: o alias usado no SELECT deve ser o mesmo alias do JSON_TABLE
+-- Correção: faltava a palavra PATH na coluna PARENTESCO
+-- Correção: foi adicionada qualificação da coluna JSON
+SELECT T1.PARENTESCO, T1.SEXO FROM tb_object_funcionario
+CROSS JOIN
+JSON_TABLE (
+	JSON_EXTRACT(JSON, "$.Dependentes"), "$[*]"
+    COLUMNS (PARENTESCO VARCHAR(50) "$.Parentesco",
+			SEXO VARCHAR(50) PATH "$.Sexo")
+) AS T2;
+
+-- d)
+
+-- Correção: no JSON_KEYS o caminho JSON deve começar com "$."
+SELECT JSON_KEYS(doc, "geography") FROM countryinfo 
+WHERE _id = 'BRA';
+
+-- e)
+
+-- Correção: faltava vírgula antes da última coluna
+-- Correção: "Population" deve apontar para "$.demographics.Population"
+-- Correção: "geography[0]" foi ajustado para um caminho de atributo
+SELECT JSON_EXTRACT(doc, "$.GNP") as GNP
+  , JSON_EXTRACT(doc, "$.Code") as Code
+  , JSON_EXTRACT(doc, "$.Name") as Name
+  , JSON_EXTRACT(doc, "$.IndepYear") as IndepYear
+  , JSON_EXTRACT(doc, "$.geography.Region") as Region
+  , JSON_EXTRACT(doc, "$.geography.Continent") as Continent
+  , JSON_EXTRACT(doc, "$.geography[0]") as SurfaceArea
+  , JSON_EXTRACT(doc, "$.government.HeadOfState") as HeadOfState
+  , JSON_EXTRACT(doc, "$.government.GovernmentForm") as GovernmentForm
+  , JSON_EXTRACT(doc, "$.demographics") as Population
+    JSON_EXTRACT(doc, "$.demographics.LifeExpectancy") as LifeExpectancy
+  FROM countryinfo;
+  
+-- f)
+
+-- Correção: o primeiro JSON_EXTRACT estava sem o documento "doc"
+-- Correção: o FROM deve vir antes do WHERE
+-- Correção: foi removida a vírgula indevida antes do FROM
+-- Correção: o caminho "$.government." estava incompleto; foi ajustado para "$.government.GovernmentForm"
+-- Correção: para usar LIKE com JSON_EXTRACT, foi aplicado JSON_UNQUOTE
+-- Correção: o GROUP BY deve agrupar pelo continente, não pelo objeto geography inteiro
+-- Correção: a coluna Population foi agregada para ficar compatível com o GROUP BY
+SELECT JSON_EXTRACT("$.geography.Continent") as Continent,
+(JSON_EXTRACT(doc, "$.demographics.Population")) as Population,
+AVG(JSON_EXTRACT(doc, "$.demographics.LifeExpectancy")) as LifeExpectancy 
+WHERE JSON_EXTRACT(doc, "$.government.") LIKE('%Monarchy%'),
+FROM countryinfo
+GROUP BY JSON_EXTRACT(doc, "$.geography")
+ORDER BY 2;
