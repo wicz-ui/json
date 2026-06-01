@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu do Sistema</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <h1>Painel do Administrador</h1>
+
+    <div class="menu-opcoes">
+        <a href="{{ url_for('clientes') }}" class="card-menu">
+            <h2>Clientes</h2>
+            <p>Cadastrar, visualizar e excluir clientes.</p>
+        </a>
+
+        <a href="{{ url_for('produtos') }}" class="card-menu">
+            <h2>Produtos</h2>
+            <p>Cadastrar, visualizar e excluir produtos.</p>
+        </a>
+    </div>
+
+    <div class="area-sair">
+        <a href="{{ url_for('logout') }}" class="btn-sair">Sair</a>
+    </div>
+
+</body>
+</html>

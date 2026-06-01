@@ -182,3 +182,104 @@ tr:nth-child(even) {
     transform: scale(1);
   }
 }
+
+.topo {
+    width: 85%;
+    margin: 20px auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.topo a {
+    text-decoration: none;
+    background-color: #8ecae6;
+    color: #fff8ef;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.topo a:hover {
+    background-color: #74b9d6;
+}
+
+.menu-opcoes {
+    width: 80%;
+    margin: 50px auto;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.card-menu {
+    width: 280px;
+    padding: 30px;
+    background-color: #fff8ef;
+    border: 1px solid #d9c2a3;
+    border-radius: 16px;
+    text-decoration: none;
+    color: #3b2f2f;
+    box-shadow: 0 4px 12px rgba(90, 60, 40, 0.18);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card-menu:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(90, 60, 40, 0.25);
+}
+
+.card-menu h2 {
+    margin-top: 0;
+    color: #6b4f3f;
+}
+
+.card-menu p {
+    color: #6b4f3f;
+}
+
+.area-sair {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.btn-sair {
+    text-decoration: none;
+    background-color: #8ecae6;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.btn-sair:hover {
+    background-color: #74b9d6;
+}
+
+.area-botoes {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.area-botoes button {
+    width: 50%;
+}
+
+.btn-inserir {
+    background-color: #8ecae6;
+}
+
+.btn-inserir:hover {
+    background-color: #74b9d6;
+}
+
+.grupo-cadastro {
+    margin-bottom: 20px;
+}
+
+.grupo-cadastro hr {
+    margin: 25px 0;
+    border: none;
+    border-top: 1px solid #cfe7f3;
+}

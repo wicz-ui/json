@@ -9,22 +9,43 @@
 </head>
 
 <body>
+    <div class="topo">
+        <a href="{{ url_for('menu') }}">Voltar ao menu</a>
+        <a href="{{ url_for('logout') }}">Sair</a>
+    </div>
+
     <h1>Cadastro de Cliente</h1>
 
-    <form action="/cadastrar" method="post">
-        <label for="cpf">CPF:</label>
-        <input type="text" id="cpf" name="cpf" maxlength="11" required>
+    <form action="{{ url_for('cadastrar_cliente') }}" method="post">
 
-        <label for="primeiro_nome">Primeiro nome:</label>
-        <input type="text" id="primeiro_nome" name="primeiro_nome" required>
+        <div id="area-clientes">
 
-        <label for="sobrenome">Sobrenome:</label>
-        <input type="text" id="sobrenome" name="sobrenome" required>
+            <div class="grupo-cadastro">
+                <label>CPF:</label>
+                <input type="text" name="cpf" maxlength="11" required>
 
-        <label for="idade">Idade:</label>
-        <input type="number" id="idade" name="idade" required>
+                <label>Primeiro nome:</label>
+                <input type="text" name="primeiro_nome" required>
 
-        <button type="submit">Cadastrar</button>
+                <label>Sobrenome:</label>
+                <input type="text" name="sobrenome" required>
+
+                <label>Idade:</label>
+                <input type="number" name="idade" required>
+            </div>
+
+        </div>
+
+        <div class="area-botoes">
+            <button type="button" onclick="inserirCliente()" class="btn-inserir">
+                Inserir mais
+            </button>
+
+            <button type="submit">
+                Cadastrar
+            </button>
+        </div>
+
     </form>
 
     <h2>Clientes cadastrados</h2>
@@ -49,7 +70,8 @@
                     <td>{{ cliente.SOBRENOME }}</td>
                     <td>{{ cliente.IDADE }}</td>
                     <td>
-                        <form action="{{ url_for('deletar', cpf=cliente.CPF) }}" method="post" class="form-deletar">
+                        <form action="{{ url_for('deletar_cliente', cpf=cliente.CPF) }}" method="post"
+                            class="form-deletar">
                             <button type="submit" class="btn-deletar">Excluir</button>
                         </form>
                     </td>
@@ -80,6 +102,33 @@
             if (popup) {
                 popup.style.display = "none";
             }
+        }
+    </script>
+
+    <script>
+        function inserirCliente() {
+            const areaClientes = document.getElementById("area-clientes");
+
+            const novoCadastro = document.createElement("div");
+            novoCadastro.classList.add("grupo-cadastro");
+
+            novoCadastro.innerHTML = `
+            <hr>
+
+            <label>CPF:</label>
+            <input type="text" name="cpf" maxlength="11" required>
+
+            <label>Primeiro nome:</label>
+            <input type="text" name="primeiro_nome" required>
+
+            <label>Sobrenome:</label>
+            <input type="text" name="sobrenome" required>
+
+            <label>Idade:</label>
+            <input type="number" name="idade" required>
+        `;
+
+            areaClientes.appendChild(novoCadastro);
         }
     </script>
 </body>

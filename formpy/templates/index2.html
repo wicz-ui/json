@@ -10,23 +10,42 @@
 </head>
 
 <body>
-
+    <div class="topo">
+        <a href="{{ url_for('menu') }}">Voltar ao menu</a>
+        <a href="{{ url_for('logout') }}">Sair</a>
+    </div>
     <h1>Cadastro de Produtos</h1>
 
-    <form action="{{ url_for('cadastrar') }}" method="post">
-        <label for="nome_produto">Nome do produto:</label>
-        <input type="text" id="nome_produto" name="nome_produto" required>
+    <form action="{{ url_for('cadastrar_produto') }}" method="post">
 
-        <label for="categoria">Categoria:</label>
-        <input type="text" id="categoria" name="categoria" required>
+        <div id="area-produtos">
 
-        <label for="preco">Preço:</label>
-        <input type="number" id="preco" name="preco" step="0.01" required>
+            <div class="grupo-cadastro">
+                <label>Nome do produto:</label>
+                <input type="text" name="nome_produto" required>
 
-        <label for="quantidade">Quantidade:</label>
-        <input type="number" id="quantidade" name="quantidade" required>
+                <label>Categoria:</label>
+                <input type="text" name="categoria" required>
 
-        <button type="submit">Cadastrar Produto</button>
+                <label>Preço:</label>
+                <input type="number" name="preco" step="0.01" required>
+
+                <label>Quantidade:</label>
+                <input type="number" name="quantidade" required>
+            </div>
+
+        </div>
+
+        <div class="area-botoes">
+            <button type="button" onclick="inserirProduto()" class="btn-inserir">
+                Inserir mais
+            </button>
+
+            <button type="submit">
+                Cadastrar
+            </button>
+        </div>
+
     </form>
 
     <h2>Produtos cadastrados</h2>
@@ -53,7 +72,7 @@
                     <td>R$ {{ produto.PRECO }}</td>
                     <td>{{ produto.QUANTIDADE }}</td>
                     <td>
-                        <form action="{{ url_for('deletar', id_produto=produto.ID_PRODUTO) }}" method="post"
+                        <form action="{{ url_for('deletar_produto', id_produto=produto.ID_PRODUTO) }}" method="post"
                             class="form-deletar">
                             <button type="submit" class="btn-deletar">Excluir</button>
                         </form>
@@ -87,6 +106,33 @@
             if (popup) {
                 popup.style.display = "none";
             }
+        }
+    </script>
+
+    <script>
+        function inserirProduto() {
+            const areaProdutos = document.getElementById("area-produtos");
+
+            const novoCadastro = document.createElement("div");
+            novoCadastro.classList.add("grupo-cadastro");
+
+            novoCadastro.innerHTML = `
+            <hr>
+
+            <label>Nome do produto:</label>
+            <input type="text" name="nome_produto" required>
+
+            <label>Categoria:</label>
+            <input type="text" name="categoria" required>
+
+            <label>Preço:</label>
+            <input type="number" name="preco" step="0.01" required>
+
+            <label>Quantidade:</label>
+            <input type="number" name="quantidade" required>
+        `;
+
+            areaProdutos.appendChild(novoCadastro);
         }
     </script>
 
