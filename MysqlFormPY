@@ -1,0 +1,32 @@
+CREATE DATABASE IF NOT EXISTS cadastro;
+use cadastro;
+
+create table cliente(
+CPF varchar(11) not null primary key,
+PRIMEIRO_NOME varchar(20) not null,
+SOBRENOME varchar(50) not null,
+IDADE int not null
+);
+
+select * from cliente;
+
+CREATE TABLE produto (
+    ID_PRODUTO INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    NOME_PRODUTO VARCHAR(80) NOT NULL,
+    CATEGORIA VARCHAR(50) NOT NULL,
+    PRECO DECIMAL(10,2) NOT NULL,
+    QUANTIDADE INT NOT NULL
+);
+
+SELECT * FROM produto;
+
+CREATE TABLE admin (
+    ID_ADMIN INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    EMAIL VARCHAR(100) NOT NULL UNIQUE,
+    SENHA VARCHAR(100) NOT NULL
+);
+
+INSERT INTO admin (EMAIL, SENHA)
+VALUES ('admin@email.com', '123456');
+
+SELECT * FROM admin;
